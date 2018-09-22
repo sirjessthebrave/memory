@@ -105,7 +105,15 @@ span.period-counter.third{
 span.period-counter.forth{
   animation-duration: 10s;
 }
-
+.timer {
+  float: right;
+  animation-name: fadeIn;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in;
+	-moz-animation-timing-function: ease-in;
+	-webkit-animation-timing-function: ease-in;
+  animation-duration: 10s;
+}
 .cards-wrapper {
   margin: 2em;
   animation-name: fadeIn;
@@ -127,6 +135,9 @@ span.period-counter.forth{
   -webkit-animation: 10s ease 0s normal forwards 1 fadeOut;
   animation: 10s ease 0s normal forwards 1 fadeOut;
 }
+.card p.hide {
+  visibility: hidden;
+}
 .card {
   float: left;
   width: 11.5%;
@@ -144,6 +155,7 @@ span.period-counter.forth{
   transition: -webkit-box-shadow .2s;
   transition: box-shadow .2s;
   transition: box-shadow .2s,-webkit-box-shadow .2s;
+  animation: holdPointer 10s;
 }
 .card:hover {
   -webkit-box-shadow: 0 0 15px rgba(0,0,0,.3);
@@ -162,10 +174,14 @@ span.period-counter.forth{
 	99% {visibility: visible; }
 	100% {opacity:0; visibility: hidden;  }
 }
+@keyframes holdPointer{
+  99% { pointer-events: none;}
+  100% {pointer-events: auto;}
+}
 @keyframes fadeIn{
-  0% { opacity:0; }
-  66% { opacity:0; }
-  100% { opacity:1; }
+  0% { opacity:0; pointer-events: none;}
+  66% { opacity:0; pointer-events: none;}
+  100% { opacity:1; pointer-events: auto;}
 }
 @keyframes fadeOut{
   0% { opacity:1; }

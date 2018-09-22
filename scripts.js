@@ -13,40 +13,56 @@ readTextFile("https://web-code-test-dot-nyt-games-prd.appspot.com/cards.json", f
     updateDOM();
 });
 
-// DOM event listeners
-cardsEvent.addEventListener('click', function (event) {
-  var cardItemElement =  event.target.classList.contains('card') ? event.target.querySelector('p') : event.target;
-  cardItemElement.classList.remove('hidden');
+// DOM event listeners after all css animations finish
+setTimeout(() => {
+  cardsEvent.addEventListener('click', function (event) {
+    var cardItemElement =  event.target.classList.contains('card') ? event.target.querySelector('p') : event.target;
+    cardItemElement.classList.remove('hidden');
+    cardItemElement.classList.remove('hide');
 
-  if(matches.length === 0){
-    matches.push({
-      content: cardItemElement.innerHTML,
-      id: cardItemElement.id
-    });
-  } else {
-    var isMatch;
-    matches.forEach(function(match, i) {
-  
-      if(match.content === cardItemElement.innerHTML){
-        matches.splice(i, 1);
-        // var randHEX = `${randNumb(255)}, ${randNumb(255)},${randNumb(255)},${randNumb(255)},${randNumb(255)},${randNumb(255)},`;
-        cardItemElement.parentNode.style.background = 'rgba(0,0,0,.3)';
-        document.getElementById(match.id).parentNode.style.background = 'rgba(0,0,0,.3)';
-        isMatch = true;
-      } else {
-          isMatch = false;
-      }
-    });
-    if (!isMatch){
+    if(matches.length === 0){
       matches.push({
         content: cardItemElement.innerHTML,
         id: cardItemElement.id
       });
+    } else if (matches[0].content === cardItemElement.innerHTML){
+      cardItemElement.parentNode.style.background = 'rgba(0,0,0,.3)';
+      document.getElementById(matches[0].id).parentNode.style.background = 'rgba(0,0,0,.3)';
+      matches.length = 0;
+    } else {
+      setTimeout(() => {
+        cardItemElement.classList.add('hide');
+        document.getElementById(matches[0].id).classList.add('hide');
+        matches.length = 0;
+      }, 300);
     }
-  };
-});
+  });
+  startTimer();
+}, 10000);
+
 
 // game functions
+function startTimer(){
+  var minutesLabel = document.getElementById("minutes");
+  var secondsLabel = document.getElementById("seconds");
+  var totalSeconds = 45;
+  setInterval(setTime, 1000);
+  
+  function setTime() {
+    --totalSeconds;
+    secondsLabel.innerHTML = pad(totalSeconds % 60);
+    minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
+  }
+  
+  function pad(val) {
+    var valString = val + "";
+    if (valString.length < 2) {
+      return "0" + valString;
+    } else {
+      return valString;
+    }
+  }
+};
 function updateDOM(){
   var playingBoard = document.getElementById('playingBoard');
   currentDeck.forEach(card => {
@@ -72,12 +88,11 @@ function buildCards(setLevel, cardData){
   cardData.levels.forEach(set => {
     if(set.difficulty === setLevel){
       var localCardVar = set.cards.reduce(function (res, current, index, array) {
-        var randID = (randNumb(1000000000) + randNumb(1000000000)).toString();
         return res.concat([{
-            id: randID,
+            id: (randNumb(1000000000) + randNumb(1000000000)).toString(),
             content: current
           }, {
-            id: randID,
+            id: (randNumb(1000000000) + randNumb(1000000000)).toString(),
             content: current
           }]);
       }, [])

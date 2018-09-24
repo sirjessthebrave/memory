@@ -176,6 +176,7 @@ span.period-counter.forth{
 }
 #gameOver {
   text-align: center;
+  margin: 30px;
 }
 .playAgainButton {
   display: inline;

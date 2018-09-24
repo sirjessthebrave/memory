@@ -3,6 +3,7 @@ var level = 'easy';
 var currentDeck = new Array;
 var matches = new Array;
 var cardsEvent = document.getElementById('playingBoard');
+var timerInterval;
 
 // Start game by getting data
 readTextFile("https://web-code-test-dot-nyt-games-prd.appspot.com/cards.json", function(response){
@@ -54,17 +55,7 @@ function updateDOM(){
 
 function changeLevel(level){
   setLevel = level;
-  currentDeck.length = 0;
-  var cardWrapperNode = document.getElementById('playingBoard');
-  while (cardWrapperNode.firstChild) {
-    cardWrapperNode.removeChild(cardWrapperNode.firstChild);
-  }
-  updateDOM(buildCards(level, data));
-  if(level === 'hard'){
-    timer(60);
-  } else {
-    timer(45);
-  }
+  resetGame(level);
 }
 
 function buildCards(setLevel, cardData){
@@ -86,16 +77,23 @@ function buildCards(setLevel, cardData){
   return currentDeck;
 }
 
-function resetGame(){
+function resetGame(level){
   currentDeck.length = 0;
+  var setLevel = level ? level : 'easy'
   var cardWrapperNode = document.getElementById('playingBoard');
   while (cardWrapperNode.firstChild) {
     cardWrapperNode.removeChild(cardWrapperNode.firstChild);
   }
   cardWrapperNode.classList.remove('hide');
   document.getElementById('gameOver').classList.add('hide');
-  updateDOM(buildCards(level, data));
-  timer(45);
+  updateDOM(buildCards(setLevel, data));
+  clearInterval(timerInterval);
+  if(level === 'hard'){
+    timer(60);
+  } else {
+    timer(45);
+  }
+
 }
 
 function endGame(){
@@ -104,19 +102,15 @@ function endGame(){
 }
 
 // helper functions
-function timer(time, delay){
+function timer(time){
   var minutesLabel = document.getElementById("minutes");
   var secondsLabel = document.getElementById("seconds");
   var totalSeconds = time;
-  if(delay){
-    setTimeout(() => {
-      var timerInterval = setInterval(setTime, 1000);
-    }, delay);
-  } else {
-    var timerInterval = setInterval(setTime, 1000);
-  }
-  
-  
+  // stop any timers that might be running
+  clearInterval(timerInterval);
+  // start timer
+  timerInterval = setInterval(setTime, 1000);
+
   function setTime() {
     if (totalSeconds !== 0){
       --totalSeconds;

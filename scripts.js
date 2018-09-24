@@ -37,32 +37,11 @@ setTimeout(() => {
       }, 300);
     }
   });
-  startTimer();
+  timer(5);
 }, 10000);
 
 
 // game functions
-function startTimer(){
-  var minutesLabel = document.getElementById("minutes");
-  var secondsLabel = document.getElementById("seconds");
-  var totalSeconds = 45;
-  setInterval(setTime, 1000);
-  
-  function setTime() {
-    --totalSeconds;
-    secondsLabel.innerHTML = pad(totalSeconds % 60);
-    minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
-  }
-  
-  function pad(val) {
-    var valString = val + "";
-    if (valString.length < 2) {
-      return "0" + valString;
-    } else {
-      return valString;
-    }
-  }
-};
 function updateDOM(){
   var playingBoard = document.getElementById('playingBoard');
   currentDeck.forEach(card => {
@@ -81,7 +60,11 @@ function changeLevel(level){
     cardWrapperNode.removeChild(cardWrapperNode.firstChild);
   }
   updateDOM(buildCards(level, data));
-
+  if(level === 'hard'){
+    timer(60);
+  } else {
+    timer(45);
+  }
 }
 
 function buildCards(setLevel, cardData){
@@ -103,7 +86,49 @@ function buildCards(setLevel, cardData){
   return currentDeck;
 }
 
+function resetGame(){
+  currentDeck.length = 0;
+  var cardWrapperNode = document.getElementById('playingBoard');
+  while (cardWrapperNode.firstChild) {
+    cardWrapperNode.removeChild(cardWrapperNode.firstChild);
+  }
+  cardWrapperNode.style.visibility = 'visible';
+  updateDOM(buildCards(level, data));
+  timer(45);
+}
+
+function endGame(){
+  document.getElementById('playingBoard').style.visibility = 'hidden';
+  document.getElementById('gameOver').style.visibility = 'visible';
+}
+
 // helper functions
+function timer(time){
+  var minutesLabel = document.getElementById("minutes");
+  var secondsLabel = document.getElementById("seconds");
+  var totalSeconds = time;
+  setInterval(setTime, 1000);
+  
+  function setTime() {
+    if (totalSeconds !== 0){
+      --totalSeconds;
+      secondsLabel.innerHTML = pad(totalSeconds % 60);
+      minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
+    } else {
+      endGame()
+    }
+  }
+
+  function pad(val) {
+    var valString = val + "";
+    if (valString.length < 2) {
+      return "0" + valString;
+    } else {
+      return valString;
+    }
+  }
+}
+
 function readTextFile(file, callback) {
   var rawFile = new XMLHttpRequest();
   rawFile.overrideMimeType("application/json");

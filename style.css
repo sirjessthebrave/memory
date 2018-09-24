@@ -64,6 +64,19 @@ h1 {
   margin-bottom: 0;
 
 }
+h4 {
+  font-family: 'nyt-cheltenham',Georgia,sans-serif;
+  text-align: center;
+  color: #4d4d4d;
+  font-weight: 300;
+  margin: 0;
+  animation-name: fadeIn;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in;
+	-moz-animation-timing-function: ease-in;
+	-webkit-animation-timing-function: ease-in;
+  animation-duration: 3s;
+}
 P {
   line-height: 1.28;
   font-family: 'nyt-cheltenham',Georgia,sans-serif;
@@ -81,6 +94,7 @@ P {
 	-webkit-animation-timing-function: ease-in;
   animation-duration: 2s;
   margin-top: 0;
+  margin-bottom: 30px;
 }
 span.period-counter {
   visibility: hidden;
@@ -114,7 +128,7 @@ span.period-counter.forth{
   animation-duration: 10s;
 }
 .cards-wrapper {
-  margin: 2em;
+  margin: 2em 2em 0 2em;
   animation-name: fadeIn;
   animation-fill-mode: forwards;
   animation-timing-function: ease-in;
@@ -184,6 +198,7 @@ span.period-counter.forth{
 	100% {opacity:0; visibility: hidden;  }
 }
 @keyframes holdPointer{
+  0% { pointer-events: none;}
   99% { pointer-events: none;}
   100% {pointer-events: auto;}
 }

@@ -160,9 +160,9 @@ span.period-counter.forth{
   -webkit-box-shadow: 0 0 15px rgba(0,0,0,.3);
   box-shadow: 0 0 15px rgba(0,0,0,.3);
 }
-#gameOver {
+/* #gameOver {
   visibility: hidden;
-}
+} */
 .playAgainButton {
   display: inline;
   padding: 10px;
@@ -208,9 +208,21 @@ body {
   margin:0;
   -webkit-font-smoothing: antialiased;
 }
+.hide {
+  visibility: hidden;
+}
+.show {
+  visibility: visible;
+}
 
 .clearfix:after {
   content: "";
   display: table;
   clear: both;
+}
+
+@media only screen and (max-width: 600px) {
+  .card {
+    width: 100%;
+  }
 }

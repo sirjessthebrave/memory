@@ -37,7 +37,7 @@ setTimeout(() => {
       }, 300);
     }
   });
-  timer(5);
+  timer(45);
 }, 10000);
 
 
@@ -61,9 +61,9 @@ function changeLevel(level){
   }
   updateDOM(buildCards(level, data));
   if(level === 'hard'){
-    timer(60);
+    timer(60, 10000);
   } else {
-    timer(45);
+    timer(45, 10000);
   }
 }
 
@@ -92,29 +92,38 @@ function resetGame(){
   while (cardWrapperNode.firstChild) {
     cardWrapperNode.removeChild(cardWrapperNode.firstChild);
   }
-  cardWrapperNode.style.visibility = 'visible';
+  cardWrapperNode.classList.remove('hide');
+  document.getElementById('gameOver').classList.add('hide');
   updateDOM(buildCards(level, data));
-  timer(45);
+  timer(45, 10000);
 }
 
 function endGame(){
-  document.getElementById('playingBoard').style.visibility = 'hidden';
-  document.getElementById('gameOver').style.visibility = 'visible';
+  document.getElementById('playingBoard').classList.add('hide');
+  document.getElementById('gameOver').classList.remove('hide');
 }
 
 // helper functions
-function timer(time){
+function timer(time, delay){
   var minutesLabel = document.getElementById("minutes");
   var secondsLabel = document.getElementById("seconds");
   var totalSeconds = time;
-  setInterval(setTime, 1000);
+  if(delay){
+    setTimeout(() => {
+      var timerInterval = setInterval(setTime, 1000);
+    }, delay);
+  } else {
+    var timerInterval = setInterval(setTime, 1000);
+  }
+  
   
   function setTime() {
     if (totalSeconds !== 0){
       --totalSeconds;
       secondsLabel.innerHTML = pad(totalSeconds % 60);
       minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
-    } else {
+    } else if (totalSeconds === 0) {
+      clearInterval(timerInterval)
       endGame()
     }
   }

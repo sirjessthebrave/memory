@@ -38,7 +38,7 @@ setTimeout(() => {
     }
   });
   timer(45);
-}, 10000);
+}, 8000);
 
 
 // game functions
@@ -47,7 +47,7 @@ function updateDOM(){
   currentDeck.forEach(card => {
     var newCard = document.createElement('div')
     newCard.className = 'card';
-    newCard.innerHTML =`<p class="cardType hidden" id="${card.id}">${card.content}</p>`
+    newCard.innerHTML =`<p class="cardType hide" id="${card.id}">${card.content}</p>`
     playingBoard.appendChild(newCard);
   });
 }
@@ -61,9 +61,9 @@ function changeLevel(level){
   }
   updateDOM(buildCards(level, data));
   if(level === 'hard'){
-    timer(60, 10000);
+    timer(60);
   } else {
-    timer(45, 10000);
+    timer(45);
   }
 }
 
@@ -95,7 +95,7 @@ function resetGame(){
   cardWrapperNode.classList.remove('hide');
   document.getElementById('gameOver').classList.add('hide');
   updateDOM(buildCards(level, data));
-  timer(45, 10000);
+  timer(45);
 }
 
 function endGame(){
